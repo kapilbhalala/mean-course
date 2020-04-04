@@ -1,0 +1,78 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<mat-card *ngIf="!isLoading">
+  <mat-card-title>Customer</mat-card-title>
+  <form (ngSubmit)="onSaveCustomer()" [formGroup]="customerForm">
+    <mat-card-content>
+      <mat-form-field>
+        <mat-label>Customer Name</mat-label>
+        <input
+          type="text"
+          placeholder="Customer Name"
+          matInput
+          formControlName="customer_name"
+        />
+        <mat-error *ngIf="customerForm.get('customer_name').invalid"
+          >Please provide customer name</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Pincode</mat-label>
+        <input
+          type="text"
+          placeholder="Pincode"
+          matInput
+          formControlName="pincode"
+        />
+        <mat-error *ngIf="customerForm.get('pincode').invalid"
+          >Please provide pincode</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>City</mat-label>
+        <mat-select formControlName="city">
+          <mat-option value="Gondal">Gondal</mat-option>
+          <mat-option value="Rajkot">Rajkot</mat-option>
+          <mat-option value="Surat">Surat</mat-option>
+          <mat-option value="Ahmedabad">Ahmedabad</mat-option>
+        </mat-select>
+        <mat-error *ngIf="customerForm.get('city').invalid"
+          >Please select city</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <textarea
+          matInput
+          placeholder="Address"
+          formControlName="address"
+        ></textarea>
+        <mat-error *ngIf="customerForm.get('address').invalid"
+          >Please provide address</mat-error
+        >
+      </mat-form-field>
+      <div>
+        <button type="button" mat-stroked-button (click)="imagePicker.click()">
+          {{ (imagePreview)?'Change':'Choose' }} Image
+        </button>
+        <input type="file" #imagePicker (change)="onImagePicked($event)" />
+      </div>
+      <div
+        *ngIf="
+          imagePreview !== '' && imagePreview && customerForm.get('image').valid
+        "
+        class="image-preview"
+      >
+        <img [src]="imagePreview" />
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button type="submit" mat-raised-button color="warn">
+        <mat-icon aria-hidden="false" aria-label="Example home icon"
+          >save</mat-icon
+        >
+        Save
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

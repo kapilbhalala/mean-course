@@ -1,0 +1,61 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-card *ngIf="customers.length <= 0 && !isLoading">
+  <p class="mat-body-1">
+    there is no customer available in database
+  </p>
+</mat-card>
+<div class="mat-elevation-z2">
+  <table *ngIf="customers.length > 0 && !isLoading" mat-table [dataSource]="customers">
+    <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Customer Name Column -->
+    <ng-container matColumnDef="customer_name">
+      <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.customer_name }}</td>
+    </ng-container>
+
+    <!-- Pincode Column -->
+    <ng-container matColumnDef="pincode">
+      <th mat-header-cell *matHeaderCellDef>Pincode</th>
+      <td mat-cell *matCellDef="let element">{{ element.pincode }}</td>
+    </ng-container>
+
+    <!-- City Column -->
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef>City</th>
+      <td mat-cell *matCellDef="let element">{{ element.city }}</td>
+    </ng-container>
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef>Address</th>
+      <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+    </ng-container>
+    <!-- Image Column -->
+    <ng-container matColumnDef="imagePath">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let element"><img [alt]="element.customer_name" [src]="element.imagePath"></td>
+    </ng-container>
+    <!-- ID Column -->
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <a [routerLink]="['/edit', element.id]" mat-raised-button color="primary" *ngIf="element.creator==userID">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">edit</mat-icon>Edit
+        </a>
+        <button type="button" mat-raised-button color="warn" (click)="onDelete(element.id)"
+          *ngIf="element.creator==userID">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon>Delete
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [length]="totalCustomers" [pageSize]="pageLength" [pageSizeOptions]="[3, 5, 10, 25, 100]"
+    (page)="onChangePageEvent($event)">
+  </mat-paginator>
+</div>
